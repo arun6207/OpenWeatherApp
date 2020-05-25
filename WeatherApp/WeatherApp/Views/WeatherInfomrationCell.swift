@@ -37,5 +37,4 @@ class WeatherInfomrationCell: UITableViewCell {
         weatherValueLabel.text = info.weather.first?.weatherDescription ?? ""
         windValueLabel.text = "\(info.wind.speed) m/sec"
     }
-    
 }

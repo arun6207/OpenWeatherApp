@@ -22,10 +22,10 @@ class CountrySearchViewModel {
     
     func searchCities(with prefix: String, completionHandler: (() -> Void))  {
         
-        let selectedCity = prefix.split(separator: ",")
+        let enteredText = prefix.split(separator: ",")
         
-        guard let lastElement = selectedCity.last,
-            selectedCity.count < 8 else { return }
+        guard let lastElement = enteredText.last,
+            enteredText.count < 8 else { return }
         
         let pattern = "\\b" + NSRegularExpression.escapedPattern(for: String(lastElement))
         

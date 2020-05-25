@@ -8,6 +8,8 @@
 
 import Foundation
 
+fileprivate let baseUrl = "http://api.openweathermap.org/data/2.5/"
+fileprivate let appId = "b53b286466bfc92572bb281c1dc99413"
 /**
  Types adopting the `Buildable` protocol can be used to build dictionary of parameters.
  */
