@@ -1,5 +1,6 @@
 # OpenWeatherApp
-Swift code for consuming open weather API's
+Swift code for consuming open weather API's 
+![](openweather_demo.gif)
 
 ## Code
 - Swift 5.0
