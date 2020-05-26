@@ -17,8 +17,6 @@ class CountrySearchViewController: UIViewController {
     let searchController = UISearchController(searchResultsController: nil)
     let viewModel = CountrySearchViewModel()
     
-//    var selectedCities = [CityInfo]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,7 +28,6 @@ class CountrySearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         searchController.searchBar.becomeFirstResponder()
     }
     
@@ -42,7 +39,6 @@ class CountrySearchViewController: UIViewController {
         searchController.searchBar.barTintColor = .white
         searchController.searchBar.sizeToFit()
         searchController.searchBar.delegate = self
-        
         countriesTableView.tableHeaderView = searchController.searchBar
     }
     
@@ -58,7 +54,6 @@ extension CountrySearchViewController : UITableViewDataSource {
         cell.textLabel?.text = viewModel.filteredCities[indexPath.row].name
         return cell
     }
-    
 }
 
 extension CountrySearchViewController: UITableViewDelegate {
@@ -68,13 +63,9 @@ extension CountrySearchViewController: UITableViewDelegate {
         let selectedCity = viewModel.filteredCities[indexPath.row]
         viewModel.selectedCities.append(selectedCity)
         
-        guard viewModel.selectedCities.count < 8 else { return }
+        guard viewModel.hasMaximumAllowedCites else { return }
         
-        let selectedCityNames = viewModel.selectedCities.map { return $0.name }.joined(separator: ",")
-        
-        if let _ = searchController.searchBar.searchTextField.text {
-            searchController.searchBar.searchTextField.text = "\(selectedCityNames),"
-        }
+        searchController.searchBar.searchTextField.text = "\(viewModel.selectedCityNames),"
     }
 }
 
@@ -94,20 +85,27 @@ extension CountrySearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.isActive = false
-        if viewModel.hasValidumberOfCities {
+        
+        if viewModel.hasValidNumberOfCities {
             delegate?.selctedCities(viewModel.selectedCities)
             dismiss(animated: true, completion: nil)
         } else {
-            
-            let title = "Select valid number of cities"
-            let message = "Min is 3 and Max is 7."
-            
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (okButton) in
-                self.searchController.searchBar.searchTextField.becomeFirstResponder()
-                self.searchController.isActive = true
-            }))
-            self.present(alertController, animated: true, completion: nil)
+        showInvalidNumberOfCitiesAlert()
         }
+    }
+}
+
+extension CountrySearchViewController {
+    func showInvalidNumberOfCitiesAlert() {
+        
+        let title = "Select valid number of cities"
+        let message = "Min is 3 and Max is 7."
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (okButton) in
+            self.searchController.isActive = true
+            self.searchController.searchBar.searchTextField.becomeFirstResponder()
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 }
